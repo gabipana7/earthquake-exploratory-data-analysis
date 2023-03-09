@@ -46,5 +46,8 @@ italy[:, [:Depth]] .= ifelse.(italy[!, [:Depth]] .<= 0.0, 0.0, italy[!, [:Depth]
 # Rename columns
 rename!(italy,:Time => :Datetime, Symbol("Depth/Km") => :Depth, :MagType => :Magnitude_Type)
 
+# Make directory if it does not exist
+mkpath("./catalogs/")
+
 # Save to CSV
-CSV.write("./data/italy.csv", italy)
+CSV.write("./catalogs/ingv.csv", italy)

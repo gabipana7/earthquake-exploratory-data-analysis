@@ -34,3 +34,7 @@ docs/site/
 *.jpg
 *.jpeg
 *.webp
+
+# GMT 
+*.history
+*.eps

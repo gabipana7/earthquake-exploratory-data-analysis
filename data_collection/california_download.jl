@@ -80,9 +80,11 @@ california[:, [:Depth]] .= ifelse.(california[!, [:Depth]] .<= 0.0, 0.0, califor
 # Drop Event_Type column
 select!(california, Not([:Event_Type]))
 
+# Make directory if it does not exist
+mkpath("./catalogs/")
 
 # Save CSV
-CSV.write("./data/california.csv", california)
+CSV.write("./catalogs/scedc.csv", california)
 
 # Remove downloaded and extracted data
 rm("output", recursive=true)

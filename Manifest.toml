@@ -2,7 +2,7 @@
 
 julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "7539309488c89b08dc8910acfcecb4592f6db368"
+project_hash = "6ebb74b9262c52ae66114413e8fd05071b1e99df"
 
 [[deps.AbstractFFTs]]
 deps = ["ChainRulesCore", "LinearAlgebra"]
@@ -180,6 +180,12 @@ version = "4.6.0"
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
 version = "1.0.1+0"
+
+[[deps.Conda]]
+deps = ["Downloads", "JSON", "VersionParsing"]
+git-tree-sha1 = "e32a90da027ca45d84678b826fffd3110bb3fc90"
+uuid = "8f4d0f93-b110-5947-807f-2305c1781a2d"
+version = "1.8.0"
 
 [[deps.ConstructionBase]]
 deps = ["LinearAlgebra"]
@@ -397,6 +403,12 @@ deps = ["ColorTypes", "Colors", "FileIO", "FixedPointNumbers", "FreeTypeAbstract
 git-tree-sha1 = "82c76c830eeaa3c499c9ec7454a871c65c43e4ef"
 uuid = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
 version = "0.8.2"
+
+[[deps.GMT]]
+deps = ["Conda", "Dates", "Pkg", "PrettyTables", "Printf", "Statistics", "Tables"]
+git-tree-sha1 = "094790d888817cbf54c3c3972546037623ccf3bd"
+uuid = "5752ebe1-31b9-557e-87aa-f909b540aa54"
+version = "0.44.6"
 
 [[deps.GPUArraysCore]]
 deps = ["Adapt"]
@@ -1401,6 +1413,11 @@ version = "0.4.1"
 git-tree-sha1 = "ca0969166a028236229f63514992fc073799bb78"
 uuid = "41fe7b60-77ed-43a1-b4f0-825fd5a5650d"
 version = "0.2.0"
+
+[[deps.VersionParsing]]
+git-tree-sha1 = "58d6e80b4ee071f5efd07fda82cb9fbe17200868"
+uuid = "81def892-9a0e-5fdd-b105-ffc91e053289"
+version = "1.3.0"
 
 [[deps.Wayland_jll]]
 deps = ["Artifacts", "Expat_jll", "JLLWrappers", "Libdl", "Libffi_jll", "Pkg", "XML2_jll"]

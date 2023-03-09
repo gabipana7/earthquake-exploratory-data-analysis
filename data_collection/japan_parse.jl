@@ -163,8 +163,11 @@ japan_preprocessed = parse_data_files(filepaths)
 japan = process_df(japan_preprocessed)
 
 
+# Make directory if it does not exist
+mkpath("./catalogs/")
+
 # Write CSV with data
-CSV.write("./data/japan.csv", japan)
+CSV.write("./catalogs/jma.csv", japan)
 
 
 # Extra

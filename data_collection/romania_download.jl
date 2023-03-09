@@ -40,8 +40,11 @@ df.Datetime = DateTime.(df.Datetime, dateformat)
 # Filter magnitudes
 romania = df[df.Magnitude .> 0.0,:]
 
+# Make directory if it does not exist
+mkpath("./catalogs/")
+
 # Write to CSV
-CSV.write("../../data/romania.csv", romania)
+CSV.write("./catalogs/infp.csv", romania)
 
 # Delete original file
 rm("romania.txt")
