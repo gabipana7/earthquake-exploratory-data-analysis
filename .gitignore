@@ -38,3 +38,4 @@ docs/site/
 # GMT 
 *.history
 *.eps
+/tmp/
