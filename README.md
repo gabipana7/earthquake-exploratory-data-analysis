@@ -179,3 +179,12 @@ The data was already trimmed geographically to keep just the Japan region during
 ![japan_semi3D_mag_0 0_Magnitude](https://user-images.githubusercontent.com/72228598/228263990-baecfd4a-2708-495e-a6a3-31f09f23d9d6.png)
 
 ---
+
+Finally, the data considered for further analysis is the following:
+
+|                    | events  | timespan                                           | latitude           | longitude          | depth        | magnitude  |
+|--------------------|---------|----------------------------------------------------|--------------------|--------------------|--------------|------------|
+| Romania (INFP)     | 32289   | 0984-01-01T00:00:00 - 2022-12-31T15:24:39.550	      | 43.5941 - 48.23    | 20.1 - 29.84       | 0.0 - 218.4  | 0.1 - 7.9  |
+| California (SCEDC) | 808085  | 1932-01-02T16:42:53.680 - 2023-03-07T07:30:05.530  | 32.0 - 37.0        | -122.0 - -114.0    | 0.0 - 51.1   | 0.01 - 7.5 |
+| Italy (INGV)       | 418580  | 1985-01-02T18:39:30.740 - 2023-03-08T11:05:17.900	  | -69.757 - 84.3258  | -179.99 - 179.939  | 0.0 - 675.4  | 0.1 - 9.0  |
+| Japan (JMA)        | 3563558 | 1983-01-01T00:36:05.840 - 2020-08-31T23:55:49.130	  | 17.4093 - 50.4268  | 118.905 - 156.681  | 0.0 - 698.4  | 0.1 - 9.0  |
