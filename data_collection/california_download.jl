@@ -17,6 +17,7 @@ latitude, longitude, depth =  Vector{Float64}(), Vector{Float64}(), Vector{Float
 magnitude =  Vector{Float64}()
 magnitude_type = Vector{String}()
 event_type = Vector{String}();
+quality = Vector{String}();
 
 for year=1932:2023
     filename="./output/SCEC_DC/" * string(year) *  ".catalog"
@@ -40,6 +41,7 @@ for year=1932:2023
             push!(latitude, parse(Float64,strip(line[40:45])))
             push!(longitude, parse(Float64, strip(line[47:54])))
             push!(depth, parse(Float64, strip(line[56:60])))
+            push!(quality, strip(line[62:62]))
     
         end
     end
@@ -65,7 +67,7 @@ end
 # initialize dataframe
 df = DataFrame(Datetime=datetime, 
         Latitude=latitude, Longitude=longitude, Depth=depth,
-        Magnitude=magnitude, Event_Type=event_type, Magnitude_Type=magnitude_type);
+        Magnitude=magnitude, Event_Type=event_type, Magnitude_Type=magnitude_type, Quality=quality);
 
 # Turn into datetime
 dateformat = dateformat"yyyy/mm/dd HH:MM:SS.ss"
