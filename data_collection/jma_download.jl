@@ -102,7 +102,7 @@ download_from_links(hrefs, download_target_path)
 # Unzip files 
 #########################################
 download_target_path = "./downloads"
-unzip_destination_path = "./japan_data"
+unzip_destination_path = "./jma_data"
 unzip_files(download_target_path, unzip_destination_path)
 ####################################################DEMO####################################################
 

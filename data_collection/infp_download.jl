@@ -1,16 +1,17 @@
 using CSV, DataFrames, Dates
 
 url = "http://www.infp.ro/data/romplus.txt"
-download(url,"./romania.txt")
+download(url,"./infp.txt")
 
 
 # Declare types of the needed columns
 datetime = Vector{String}()
 latitude, longitude, depth =  Vector{Float64}(), Vector{Float64}(), Vector{Float64}()
 magnitude =  Vector{Float64}()
+quality = Vector{String}()
 
 # open the file
-open(filename) do io
+open("./infp.txt") do io
     # skip the first line
     line = readline(io)
     while true
@@ -25,26 +26,28 @@ open(filename) do io
         push!(longitude, parse(Float64, strip(line[48:56])))
         push!(depth, parse(Float64, strip(line[76:80])))
         push!(magnitude, parse(Float64, strip(line[108:110])))
+        push!(quality, strip(line[139:139]))
     end
 end
 
 # Initialize dataframe
 df = DataFrame(Datetime=datetime, 
                 Latitude=latitude, Longitude=longitude, Depth=depth,
-                Magnitude=magnitude)
+                Magnitude=magnitude,
+                Quality=quality)
 
 # Turn to datetime 
 dateformat = dateformat"yyyy/mm/dd  HH:MM:SS.s"
 df.Datetime = DateTime.(df.Datetime, dateformat)
 
 # Filter magnitudes
-romania = df[df.Magnitude .> 0.0,:]
+infp = df[df.Magnitude .> 0.0,:]
 
 # Make directory if it does not exist
 mkpath("./catalogs/")
 
 # Write to CSV
-CSV.write("./catalogs/infp.csv", romania)
+CSV.write("./catalogs/infp.csv", infp)
 
 # Delete original file
-rm("romania.txt")
+rm("infp.txt")

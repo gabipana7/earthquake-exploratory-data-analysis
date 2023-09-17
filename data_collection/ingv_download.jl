@@ -14,7 +14,7 @@ dataset = CSV.read(download(url), DataFrame, delim="|", stringtype=String,
         select=[:Time, :Latitude, :Longitude, Symbol("Depth/Km"), :MagType, :Magnitude, :EventType], 
         types=Dict(:Time=>String))#, :Latitude=>Float64, :Longitude=>Float64, :MagType=>String, :Magnitude=>Float64, :EventType=>String)) 
 # Initialize dataframe with proper columns and columns typt
-italy = similar(dataset,0)
+ingv = similar(dataset,0)
 
 
 for year=1985:2023
@@ -26,28 +26,28 @@ for year=1985:2023
                 select=[:Time, :Latitude, :Longitude, Symbol("Depth/Km"), :MagType, :Magnitude, :EventType], 
                 types=Dict(:Time=>String), #, :Latitude=>Float64, :Longitude=>Float64, Symbol("Depth/Km")=>Float64, :MagType=>String, :Magnitude=>Float64, :EventType=>String)) 
                 validate=false)
-        append!(italy,df);
+        append!(ingv,df);
     end
 end
 
 # Turn Time into datetime
-italy.Time = chop.(italy.Time, tail=3)
-italy.Time = DateTime.(italy.Time)
+ingv.Time = chop.(ingv.Time, tail=3)
+ingv.Time = DateTime.(ingv.Time)
 
 # Filter event types to earthquake and magnitudes larger than 0
-italy = italy[(italy.EventType .== "earthquake") .& (italy.Magnitude .> 0.0) , :]
+ingv = ingv[(ingv.EventType .== "earthquake") .& (ingv.Magnitude .> 0.0) , :]
 
 # Drop Event_Type column
-select!(italy, Not([:EventType]))
+select!(ingv, Not([:EventType]))
 
 # Handle negative depths => turn into zeros
-italy[:, [:Depth]] .= ifelse.(italy[!, [:Depth]] .<= 0.0, 0.0, italy[!, [:Depth]])
+ingv[:, [:Depth]] .= ifelse.(ingv[!, [:Depth]] .<= 0.0, 0.0, ingv[!, [:Depth]])
 
 # Rename columns
-rename!(italy,:Time => :Datetime, Symbol("Depth/Km") => :Depth, :MagType => :Magnitude_Type)
+rename!(ingv,:Time => :Datetime, Symbol("Depth/Km") => :Depth, :MagType => :Magnitude_Type)
 
 # Make directory if it does not exist
 mkpath("./catalogs/")
 
 # Save to CSV
-CSV.write("./catalogs/ingv.csv", italy)
+CSV.write("./catalogs/ingv.csv", ingv)

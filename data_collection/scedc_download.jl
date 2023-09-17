@@ -3,10 +3,10 @@ using Tar, CodecZlib
 
 # Connect to file and download
 url = "https://service.scedc.caltech.edu/ftp/catalogs/SCEC_DC/SCEDC_catalogs.tar.gz"
-download(url,"./california.tar.gz")
+download(url,"./scedc.tar.gz")
 
 # Extract archive
-open(GzipDecompressorStream, "./california.tar.gz") do io
+open(GzipDecompressorStream, "./scedc.tar.gz") do io
     Tar.extract(io, "output")
 end;
 
@@ -74,20 +74,20 @@ dateformat = dateformat"yyyy/mm/dd HH:MM:SS.ss"
 df.Datetime = DateTime.(df.Datetime, dateformat);
 
 # Filter event types to earthquake and magnitudes larger than 0
-california = df[(df.Event_Type .== "eq") .& (df.Magnitude .> 0.0),:];
+scedc = df[(df.Event_Type .== "eq") .& (df.Magnitude .> 0.0),:];
 
 # Handle negative depths => turn into zeros
-california[:, [:Depth]] .= ifelse.(california[!, [:Depth]] .<= 0.0, 0.0, california[!, [:Depth]])
+scedc[:, [:Depth]] .= ifelse.(scedc[!, [:Depth]] .<= 0.0, 0.0, scedc[!, [:Depth]])
 
 # Drop Event_Type column
-select!(california, Not([:Event_Type]))
+select!(scedc, Not([:Event_Type]))
 
 # Make directory if it does not exist
 mkpath("./catalogs/")
 
 # Save CSV
-CSV.write("./catalogs/scedc.csv", california)
+CSV.write("./catalogs/scedc.csv", scedc)
 
 # Remove downloaded and extracted data
 rm("output", recursive=true)
-rm("california.tar.gz")
+rm("scedc.tar.gz")

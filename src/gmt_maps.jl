@@ -3,6 +3,15 @@ using GMT
 
 
 function scatter_2D(df, region, magnitude_threshold; z_control="Magnitude")
+    # path for resulting maps
+    mkpath("./results/$region/")
+
+    # read data
+    df = CSV.read("./data/$region.csv", DataFrame);
+
+    # temporary path to store gmt generation files
+    mkpath("./tmp/$region/")
+    cd("./tmp/$region/")
 
     df = df[df.Magnitude .>= magnitude_threshold,:];
 
@@ -30,20 +39,29 @@ function scatter_2D(df, region, magnitude_threshold; z_control="Magnitude")
 
     basemap(region=map_coords,frame=(axes=:WSne), proj=:merc)
 
-    grdview!(relief_map, proj=:merc, axis=:none, surftype=(image=1000,), 
-            cmap=C_map, zsize=1.5, alpha=40)
+    grdview!(relief_map, proj=:merc, axis=:none, surftype=(image=2000,), 
+            cmap=C_map, zsize=1.5, alpha=30)
 
     plot!(df.Longitude, df.Latitude, 
             markersize=marker_size, marker=:cc, markerline=:faint,
             cmap=C_markers, zcolor=zcolor_control, alpha=60)
 
     colorbar!(pos=(outside=:MR, offset=(1.0,0)), shade=0.4, xaxis=(annot=:auto,), frame=(xlabel=z_control,),par=(MAP_LABEL_OFFSET=0.8,), 
-                savefig="../../results/$region/$(region)_2D_mag_$(magnitude_threshold)_$(z_control).png")
+                savefig="../../gmt/$region/$(region)_2D_mag_$(magnitude_threshold)_$(z_control).pdf")
 
 end
 
 
-function scatter_semi_3D(df, region, magnitude_threshold; z_control="Magnitude")
+function scatter_semi_3D(df, region, magnitude_threshold; z_control="Magnitude", perspective=(145,40))
+    # path for resulting maps
+    mkpath("./results/$region/")
+
+    # read data
+    df = CSV.read("./data/$region.csv", DataFrame);
+
+    # temporary path to store gmt generation files
+    mkpath("./tmp/$region/")
+    cd("./tmp/$region/")
 
     df = df[df.Magnitude .>= magnitude_threshold,:];
 
@@ -70,17 +88,17 @@ function scatter_semi_3D(df, region, magnitude_threshold; z_control="Magnitude")
     zcolor_control = df[!, z_control]
 
 
-    basemap(region=map_coords,frame=(axes=:SE), proj=:merc, view=(145,45))
+    basemap(region=map_coords,frame=(axes=:SE), proj=:merc, view=perspective)
 
-    grdview!(relief_map, proj=:merc, axis=:none, surftype=(image=1000,), 
-            cmap=C_map, zsize=1.5, alpha=40 , view=(145,45))
+    grdview!(relief_map, proj=:merc, axis=:none, surftype=(image=2000,), 
+            cmap=C_map, zsize=1.5, alpha=30 , view=perspective)
 
     plot!(df.Longitude, df.Latitude, 
             markersize=marker_size, marker=:cc, markerline=:faint,
-            cmap=C_markers, zcolor=zcolor_control, alpha=60, view=(145,45))
+            cmap=C_markers, zcolor=zcolor_control, alpha=60, view=perspective)
 
     colorbar!(pos=(outside=:MR, offset=(1.6,0)), shade=0.4, xaxis=(annot=:auto,), frame=(xlabel=z_control,),par=(MAP_LABEL_OFFSET=0.8,), 
-                view=(145,45), savefig="../../results/$region/$(region)_semi3D_mag_$(magnitude_threshold)_$(z_control).png")
+                view=perspective, savefig="../../gmt/$region/$(region)_semi3D_mag_$(magnitude_threshold)_$(z_control).png")
 
 end
 
@@ -91,18 +109,10 @@ end
 # CLI input
 region = ARGS[1]
 
-# path for resulting maps
-mkpath("./results/$region/")
 
-# read data
-df = CSV.read("./data/$region.csv", DataFrame);
-
-# temporary path to store gmt generation files
-mkpath("./tmp/$region/")
-cd("./tmp/$region/")
 
 # create maps
-for mag in [0.0,1.0,2.0,3.0,4.0]
+for mag in [0.0, 2.0]
     scatter_2D(df, region, mag; z_control="Magnitude")
     scatter_2D(df, region, mag; z_control="Depth")
 
