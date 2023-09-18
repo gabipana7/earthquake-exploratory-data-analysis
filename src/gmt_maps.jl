@@ -4,7 +4,7 @@ using GMT
 
 function scatter_2D(df, region, magnitude_threshold; z_control="Magnitude")
     # path for resulting maps
-    mkpath("./results/$region/")
+    mkpath("./gmt/$region/")
 
     # read data
     # df = CSV.read("./data/$region.csv", DataFrame);
@@ -54,7 +54,7 @@ end
 
 function scatter_semi_3D(df, region, magnitude_threshold; z_control="Magnitude", perspective=(145,40))
     # path for resulting maps
-    mkpath("./results/$region/")
+    mkpath("./gmt/$region/")
 
     # read data
     df = CSV.read("./data/$region.csv", DataFrame);
