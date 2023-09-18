@@ -1,19 +1,23 @@
 using CSV, DataFrames, Dates
 using CairoMakie
+using StatsPlots
 
+
+function load_data(region, catalog)
+    df = CSV.read("./catalogs/$catalog.csv", DataFrame);
+    println(first(df,5), describe(df))
+
+    mkpath("./data")
+    mkpath("./eda_results/$region/")
+
+    return df
+end
 
 # EVENTS EDA
-function events_histogram(region, catalog)
-    region = "California"
-    catalog = "scedc"
-    mkpath("./eda_results/$region/")
-    mkpath("./data") 
-    df = CSV.read("./catalogs/$catalog.csv", DataFrame);
-    println(describe(df))
-
+function events_histogram(df, region)
+ 
     set_theme!(Theme(fonts=(; regular="CMU Serif")))
     fig = Figure(resolution = (700, 500), font= "CMU Serif",) ## probably you need to install this font in your system
-
 
     ax = Axis(fig[1, 1], xlabel = L"M", ylabel = L"N", ylabelsize = 26,
     xlabelsize = 22, xgridstyle = :dash, ygridstyle = :dash, xtickalign = 1,
@@ -67,7 +71,7 @@ function join_on_counted(df,trim_year,minmag,maxmag)
 	return df_counted_mag
 end
 
-function explore_timespan(df, trim_year, explore_trim_year; magnitude_threshold=0.0)
+function explore_timespan(df, region, trim_year, explore_trim_year; magnitude_threshold=0.0)
     df_counted = join_on_counted_no_mag_bounds(df,trim_year,magnitude_threshold)
     set_theme!(Theme(fonts=(; regular="CMU Serif")))
     fig = Figure(resolution = (700, 500), font= "CMU Serif",) ## probably you need to install this font in your system
@@ -89,18 +93,17 @@ function explore_timespan(df, trim_year, explore_trim_year; magnitude_threshold=
     axislegend(ax2, position = :lt, bgcolor = (:grey90, 0.25), labelsize=10);
 
     save("./eda_results/$region/$(region)_events_per_year.png",fig, px_per_unit=5)
-
+    fig
 
     trim_year = explore_trim_year
-    df_counted = join_on_counted_no_mag_bounds(df,trim_year,magnitude_threshold)
-    df_trimmed = df_counted[(df_counted.Datetime .> DateTime(trim_year,1,1,0,0,0)),:]
+    df_trimmed = df[(df.Datetime .> DateTime(trim_year,1,1,0,0,0)),:]
 
     return df_trimmed 
 end
 
 # MAGNITUDE TYPE EXPLORATION
-function magtype_boxplot(df, mag_type_descriptions)
-    using StatsPlots
+function magtype_boxplot(df, region; mag_type_descriptions)
+
 
     StatsPlots.boxplot(df.Magnitude_Type, df.Magnitude, xlabel="Magnitude Type", ylabel="Magnitude")
     StatsPlots.savefig("./eda_results/$region/$(region)_magnitude_type_boxplot.png")
@@ -113,15 +116,18 @@ function magtype_boxplot(df, mag_type_descriptions)
     end
 
     insertcols!(df_mag_type_count, 3, :Year_range => mag_type_year_range)
-    insertcols!(df_mag_type_count, 4, :Description => mag_type_descriptions)
+    if mag_type_descriptions
+        insertcols!(df_mag_type_count, 4, :Description => mag_type_descriptions)
+        return df_mag_type_count
+    else
+        return df_mag_type_count
+    end
 
-    return df_mag_type_count
 end
 
 
 # QUALITY EXPLORATION
-function quality_boxplot(df)
-    using StatsPlots
+function quality_boxplot(df, region)
 
     StatsPlots.boxplot(df.Quality, df.Magnitude, xlabel="Quality", ylabel="Magnitude")
     StatsPlots.savefig("./eda_results/$region/$(region)_quality_boxplot.png")

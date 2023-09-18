@@ -7,7 +7,7 @@ function scatter_2D(df, region, magnitude_threshold; z_control="Magnitude")
     mkpath("./results/$region/")
 
     # read data
-    df = CSV.read("./data/$region.csv", DataFrame);
+    # df = CSV.read("./data/$region.csv", DataFrame);
 
     # temporary path to store gmt generation files
     mkpath("./tmp/$region/")
@@ -47,7 +47,7 @@ function scatter_2D(df, region, magnitude_threshold; z_control="Magnitude")
             cmap=C_markers, zcolor=zcolor_control, alpha=60)
 
     colorbar!(pos=(outside=:MR, offset=(1.0,0)), shade=0.4, xaxis=(annot=:auto,), frame=(xlabel=z_control,),par=(MAP_LABEL_OFFSET=0.8,), 
-                savefig="../../gmt/$region/$(region)_2D_mag_$(magnitude_threshold)_$(z_control).pdf")
+                savefig="./gmt/$region/$(region)_2D_mag_$(magnitude_threshold)_$(z_control).pdf")
 
 end
 
@@ -98,25 +98,8 @@ function scatter_semi_3D(df, region, magnitude_threshold; z_control="Magnitude",
             cmap=C_markers, zcolor=zcolor_control, alpha=60, view=perspective)
 
     colorbar!(pos=(outside=:MR, offset=(1.6,0)), shade=0.4, xaxis=(annot=:auto,), frame=(xlabel=z_control,),par=(MAP_LABEL_OFFSET=0.8,), 
-                view=perspective, savefig="../../gmt/$region/$(region)_semi3D_mag_$(magnitude_threshold)_$(z_control).png")
+                view=perspective, savefig="./gmt/$region/$(region)_semi3D_mag_$(magnitude_threshold)_$(z_control).pdf")
 
 end
 
-# user input
-# print("What's the region ? \n\n") 
-# region = readline()
-
-# CLI input
-region = ARGS[1]
-
-
-
-# create maps
-for mag in [0.0, 2.0]
-    scatter_2D(df, region, mag; z_control="Magnitude")
-    scatter_2D(df, region, mag; z_control="Depth")
-
-    scatter_semi_3D(df, region, mag; z_control="Magnitude")
-    scatter_semi_3D(df, region, mag; z_control="Depth")
-end
 
