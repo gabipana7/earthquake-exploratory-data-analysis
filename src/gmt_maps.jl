@@ -39,7 +39,7 @@ function scatter_2D(df, region, magnitude_threshold; z_control="Magnitude")
 
     basemap(region=map_coords,frame=(axes=:WSne), proj=:merc)
 
-    grdview!(relief_map, proj=:merc, axis=:none, surftype=(image=2000,), 
+    grdview!(relief_map, proj=:merc, axis=:none, surftype=(image=1000,), 
             cmap=C_map, zsize=1.5, alpha=30)
 
     plot!(df.Longitude, df.Latitude, 
@@ -47,7 +47,7 @@ function scatter_2D(df, region, magnitude_threshold; z_control="Magnitude")
             cmap=C_markers, zcolor=zcolor_control, alpha=60)
 
     colorbar!(pos=(outside=:MR, offset=(1.0,0)), shade=0.4, xaxis=(annot=:auto,), frame=(xlabel=z_control,),par=(MAP_LABEL_OFFSET=0.8,), 
-                savefig="./gmt/$region/$(region)_2D_mag_$(magnitude_threshold)_$(z_control).pdf")
+                savefig="../../gmt/$region/$(region)_2D_mag_$(magnitude_threshold)_$(z_control).png")
 
 end
 
