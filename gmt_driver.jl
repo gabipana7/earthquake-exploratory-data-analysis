@@ -6,7 +6,7 @@ include("./src/gmt_map.jl")
 # mag = 2.0
 # scatter_2D(df, region, mag; z_control="Magnitude")
 
-for region in ["Romania", "Italy", "Japan"]
+for region in ["California"]
     df = CSV.read("./data/$region.csv", DataFrame);
     for mag in [0.0, 2.0]
         for z_control in ["Magnitude", "Depth"]
