@@ -2,7 +2,7 @@ using CSV, FileIO, DataFrames, Dates
 using GMT
 
 
-function scatter_2D(df, region, magnitude_threshold; z_control="Magnitude")
+function scatter_2D(df, region, magnitude_threshold; z_control="Magnitude", format="png")
     # path for resulting maps
     mkpath("./gmt/$region/")
 
@@ -46,18 +46,20 @@ function scatter_2D(df, region, magnitude_threshold; z_control="Magnitude")
             markersize=marker_size, marker=:cc, markerline=:faint,
             cmap=C_markers, zcolor=zcolor_control, alpha=60)
 
-    colorbar!(pos=(outside=:MR, offset=(1.0,0)), shade=0.4, xaxis=(annot=:auto,), frame=(xlabel=z_control,),par=(MAP_LABEL_OFFSET=0.8,), 
-                savefig="../../gmt/$region/$(region)_2D_mag_$(magnitude_threshold)_$(z_control).png")
-
+    if format == "png"
+        colorbar!(pos=(outside=:MR, offset=(1.0,0)), shade=0.4, xaxis=(annot=:auto,), frame=(xlabel=z_control,),par=(MAP_LABEL_OFFSET=0.8,), 
+                    savefig="../../gmt/$region/$(region)_2D_mag_$(magnitude_threshold)_$(z_control).png")
+    else
+        colorbar!(pos=(outside=:MR, offset=(1.0,0)), shade=0.4, xaxis=(annot=:auto,), frame=(xlabel=z_control,),par=(MAP_LABEL_OFFSET=0.8,), 
+                savefig="../../gmt/$region/$(region)_2D_mag_$(magnitude_threshold)_$(z_control).pdf")
+    end
 
     cd("..")
     cd("..")
-
-
 end
 
 
-function scatter_semi_3D(df, region, magnitude_threshold; z_control="Magnitude", perspective=(145,40))
+function scatter_semi_3D(df, region, magnitude_threshold; z_control="Magnitude", format="png", perspective=(145,40))
     # path for resulting maps
     mkpath("./gmt/$region/")
 
@@ -102,8 +104,13 @@ function scatter_semi_3D(df, region, magnitude_threshold; z_control="Magnitude",
             markersize=marker_size, marker=:cc, markerline=:faint,
             cmap=C_markers, zcolor=zcolor_control, alpha=60, view=perspective)
 
-    colorbar!(pos=(outside=:MR, offset=(1.6,0)), shade=0.4, xaxis=(annot=:auto,), frame=(xlabel=z_control,),par=(MAP_LABEL_OFFSET=0.8,), 
-                view=perspective, savefig="../../gmt/$region/$(region)_semi3D_mag_$(magnitude_threshold)_$(z_control).png")
+    if format == "png"
+        colorbar!(pos=(outside=:MR, offset=(1.6,0)), shade=0.4, xaxis=(annot=:auto,), frame=(xlabel=z_control,),par=(MAP_LABEL_OFFSET=0.8,), 
+                    view=perspective, savefig="../../gmt/$region/$(region)_semi3D_mag_$(magnitude_threshold)_$(z_control).png")
+    else
+        colorbar!(pos=(outside=:MR, offset=(1.6,0)), shade=0.4, xaxis=(annot=:auto,), frame=(xlabel=z_control,),par=(MAP_LABEL_OFFSET=0.8,), 
+                    view=perspective, savefig="../../gmt/$region/$(region)_semi3D_mag_$(magnitude_threshold)_$(z_control).pdf")
+    end
 
     cd("..")
     cd("..")
