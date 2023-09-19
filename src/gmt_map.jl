@@ -47,7 +47,7 @@ function scatter_2D(df, region, magnitude_threshold; z_control="Magnitude")
             cmap=C_markers, zcolor=zcolor_control, alpha=60)
 
     colorbar!(pos=(outside=:MR, offset=(1.0,0)), shade=0.4, xaxis=(annot=:auto,), frame=(xlabel=z_control,),par=(MAP_LABEL_OFFSET=0.8,), 
-                savefig="../../gmt/$region/$(region)_2D_mag_$(magnitude_threshold)_$(z_control).pdf")
+                savefig="../../gmt/$region/$(region)_2D_mag_$(magnitude_threshold)_$(z_control).png")
 
 
     cd("..")
@@ -103,7 +103,7 @@ function scatter_semi_3D(df, region, magnitude_threshold; z_control="Magnitude",
             cmap=C_markers, zcolor=zcolor_control, alpha=60, view=perspective)
 
     colorbar!(pos=(outside=:MR, offset=(1.6,0)), shade=0.4, xaxis=(annot=:auto,), frame=(xlabel=z_control,),par=(MAP_LABEL_OFFSET=0.8,), 
-                view=perspective, savefig="../../gmt/$region/$(region)_semi3D_mag_$(magnitude_threshold)_$(z_control).pdf")
+                view=perspective, savefig="../../gmt/$region/$(region)_semi3D_mag_$(magnitude_threshold)_$(z_control).png")
 
     cd("..")
     cd("..")
