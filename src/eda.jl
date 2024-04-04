@@ -17,7 +17,7 @@ end
 function events_histogram(df, region)
  
     set_theme!(Theme(fonts=(; regular="CMU Serif")))
-    fig = Figure(resolution = (700, 500), font= "CMU Serif",) ## probably you need to install this font in your system
+    fig = Figure(size = (700, 500), font= "CMU Serif",) ## probably you need to install this font in your system
 
     ax = Axis(fig[1, 1], xlabel = L"M", ylabel = L"N", ylabelsize = 26,
     xlabelsize = 22, xgridstyle = :dash, ygridstyle = :dash, xtickalign = 1,
@@ -25,7 +25,7 @@ function events_histogram(df, region)
 
     hist!(ax, df[:,:Magnitude], bins = 40, label = "number of events")
 
-    axislegend(ax, position = :rt, bgcolor = (:grey90, 0.25), labelsize=18);
+    axislegend(ax, position = :rt, backgroundcolor = (:grey90, 0.25), labelsize=18);
 
     save("./eda_results/$region/$(region)_histogram_events_magnitudes.png",fig, px_per_unit=5)
     return fig
@@ -74,7 +74,7 @@ end
 function explore_timespan(df, region, trim_year, explore_trim_year; magnitude_threshold=0.0)
     df_counted = join_on_counted_no_mag_bounds(df,trim_year,magnitude_threshold)
     set_theme!(Theme(fonts=(; regular="CMU Serif")))
-    fig = Figure(resolution = (700, 500), font= "CMU Serif",) ## probably you need to install this font in your system
+    fig = Figure(size = (700, 500), font= "CMU Serif",) ## probably you need to install this font in your system
 
 
     ax1 = Axis(fig[1, 1], xlabel = L"\mathrm{Year}", ylabel = L"N", ylabelsize = 26,
@@ -90,7 +90,7 @@ function explore_timespan(df, region, trim_year, explore_trim_year; magnitude_th
     barplot!(ax2, df_counted.Year[end-(2023-explore_trim_year):end], df_counted.count[end-(2023-explore_trim_year):end], label="Starting $(explore_trim_year)")
     hideydecorations!(ax2)
 
-    axislegend(ax2, position = :lt, bgcolor = (:grey90, 0.25), labelsize=10);
+    axislegend(ax2, position = :lt, backgroundcolor = (:grey90, 0.25), labelsize=10);
 
     save("./eda_results/$region/$(region)_events_per_year.png",fig, px_per_unit=5)
     fig
